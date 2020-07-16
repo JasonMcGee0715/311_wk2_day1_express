@@ -48,9 +48,26 @@ app.post('/users', (req, res) => {
   res.json(users);
 })
 
-app.put('users/1', (req, res) => {
-  const found = users.some(user => user.id === Number(req.params.id)
-})
+app.put('users/:id', (req, res) => {
+  const found = users.some(user => user.id === Number(req.params.id));
+
+  if (found) {
+    const updatedUser = req.body;
+    users.forEach(user => {
+      if(user.id === Number(req.params.id)) {
+        user.name = updatedUser.name ? updatedUser.name : user.name;
+        user.occupation = updatedUser.occupation ? updatedUser.occupation : user.occupation;
+        user.avatar = updatedUser.avatar ? updatedUser.avatar : user.avatar;
+      }
+    })
+  } 
+  else {
+      res.status(400).json({ msg: `User with ${req.params.id} doesn't exist. Try again.`})
+    }
+    
+  res.json(users)
+  }
+)
 
 
 /* END - create routes here */
