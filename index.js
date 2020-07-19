@@ -35,10 +35,10 @@ app.post('/users', (req, res) => {
     ...req.body
   });
   // const newUser = {
-  //   _id: (counter += 1),
-  //   Name: req.body.name,
-  //   Occupation: req.body.occupation,
-  //   Avatar: req.body.avatar
+  //   _id: (counter + 1),
+  //   name: req.body.name,
+  //   occupation: req.body.occupation,
+  //   avatar: req.body.avatar
   // }
   // users.push(newUser);
   res.json(users);
@@ -56,9 +56,10 @@ app.put('/users/1', (req, res) => {
   })
 })
 
-//Basic DELETE
+// Basic DELETE
 app.delete('/users/1', (req, res) => {
   let newUsers = users.slice(1);
+  // return res.send({ msg: `Deleted`})
   res.json(newUsers)
 })
 
@@ -72,7 +73,7 @@ app.get('/users/:userId', (req, res) => {
   })
 
 //Dynamic PUT
-app.put('users/:id', (req, res) => {
+app.put('/users/:id', (req, res) => {
   const found = users.some(user => user._id === Number(req.params.id));
 
   if (found) {
@@ -92,6 +93,32 @@ app.put('users/:id', (req, res) => {
   res.json(users)
   }
 )
+
+// app.put('/users/:userID', (req, res) => {
+//   let id = req.body.userID;
+
+//   users.find(user => {
+//     if (user._id === Number(id)) {
+//         user.name = updatedUser.name ? updatedUser.name : user.name;
+//         user.occupation = updatedUser.occupation ? updatedUser.occupation : user.occupation;
+//         user.avatar = updatedUser.avatar ? updatedUser.avatar : user.avatar;
+//     }
+//     res.json(users)
+//   })
+// })
+
+//Dynamic DELETE
+app.delete('/users/:userId', (req, res)=>{
+  const id = req.params.userId;
+
+  const filteredUsers = users.find(user => user._id === Number(id))
+  if(filteredUsers){
+  // res.json(users.filter(user => user._id !== Number(id)))
+  filteredUsers.isActive = "false";
+  // res.send({ msg: 'Deleted' });
+  res.json(filteredUsers);
+  }
+  });
 
 
 
